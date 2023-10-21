@@ -10,9 +10,9 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         HStack {
+            CardView(isFaceUp: true)
             CardView()
-            CardView()
-            CardView()
+            CardView(isFaceUp: true)
             CardView()
         }
         .padding()
