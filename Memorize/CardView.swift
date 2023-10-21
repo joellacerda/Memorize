@@ -14,16 +14,22 @@ struct CardView: View {
     
     var body: some View {
         ZStack {
-            base.fill(.white)
-            base.strokeBorder(lineWidth: 2)
-            Text(content).font(.largeTitle)
+            Group {
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 2)
+                Text(content).font(.largeTitle)
+            }
+            .opacity(isFaceUp ? 1 : 0)
             
-            if isFaceUp == false {
+            
+            Group {
                 base.fill(.orange)
                 base.strokeBorder(lineWidth: 2)
                 Image(systemName: "brain.filled.head.profile")
                     .font(.largeTitle)
             }
+            .opacity(isFaceUp ? 0 : 1)
+            
         }
         .onTapGesture {
             isFaceUp.toggle()
