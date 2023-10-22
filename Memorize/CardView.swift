@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct CardView: View {
+struct CardView: Identifiable, View {
+    var id = UUID()
     let content: String
-    @State var isFaceUp = false
     let base = RoundedRectangle(cornerRadius: 12)
+    @State var isFaceUp = false
+   
     
     var body: some View {
         ZStack {
