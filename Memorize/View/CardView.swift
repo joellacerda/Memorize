@@ -11,7 +11,6 @@ struct CardView: Identifiable, View {
     var id = UUID()
     let content: String
     let base = RoundedRectangle(cornerRadius: 12)
-    let color: Color
     @State var isFaceUp = false
    
     
@@ -26,7 +25,7 @@ struct CardView: Identifiable, View {
             
             
             Group {
-                base.fill(color)
+                base.fill(.orange)
                 base.strokeBorder(lineWidth: 2)
                 Image(systemName: "brain.filled.head.profile")
                     .font(.largeTitle)
@@ -41,6 +40,6 @@ struct CardView: Identifiable, View {
 }
 
 #Preview {
-    CardView(content: "👻", color: .orange)
+    CardView(content: "👻")
         .padding()
 }
