@@ -8,12 +8,6 @@
 import SwiftUI
 
 struct MemoryGameView: View {
-    let halloweenTheme = ["👻", "👽", "🎃", "🧛", "🫎", "🐍", "👻", "👽", "🎃", "🧛", "🫎", "🐍"]
-    let vehiclesTheme = ["🚗", "🏍️", "✈️", "⛵️", "🚀", "🚜", "🚗", "🏍️", "✈️", "⛵️", "🚀", "🚜"]
-    let animalsTheme = ["🐶", "🐱", "🐭", "🐰", "🐻", "🦁", "🐶", "🐱", "🐭", "🐰", "🐻", "🦁"]
-    
-    @State private var selectedEmojis: [String] = []
-    
     var body: some View {
         VStack {
             Text("Memorize!")
@@ -26,33 +20,49 @@ struct MemoryGameView: View {
         .padding()
     }
     
+    @State private var deck: [CardView] = []
+    
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-            ForEach(selectedEmojis, id: \.self) { emoji in
-                CardView(content: emoji)
-                    .aspectRatio(contentMode: .fit)
+            ForEach(0..<12, id: \.self) { i in
+                CardView(content: selectedEmojis.0[i], color: selectedEmojis.2, isFaceUp: false)
+                    .scaledToFit()
             }
+            
         }
     }
+    
+    
+    
+    let halloweenTheme = (emojis: ["👻", "👽", "🎃", "🧛", "🫎", "🐍", "👻", "👽", "🎃", "🧛", "🫎", "🐍"], name: "Halloween", color: Color(.orange))
+    let vehiclesTheme = (emojis: ["🚗", "🏍️", "✈️", "⛵️", "🚀", "🚜", "🚗", "🏍️", "✈️", "⛵️", "🚀", "🚜"], name: "Vehicles", color: Color(.yellow))
+    let animalsTheme = (emojis: ["🐶", "🐱", "🐭", "🐰", "🐻", "🦁", "🐶", "🐱", "🐭", "🐰", "🐻", "🦁"], name: "Animals", color: Color(.green))
+    
+    @State private var selectedEmojis: ([String], String, Color) = (emojis: ["👻", "👽", "🎃", "🧛", "🫎", "🐍", "👻", "👽", "🎃", "🧛", "🫎", "🐍"], name: "Halloween", color: Color(.orange))
     
     var cardThemeAdjuster: some View {
         HStack {
             Spacer()
-            cardThemeAdjuster(to: halloweenTheme, symbol: "moon.stars.fill")
+            cardThemeAdjuster(to: halloweenTheme.emojis, name: halloweenTheme.name, symbol: "moon.stars.fill", color: halloweenTheme.color)
             Spacer()
-            cardThemeAdjuster(to: vehiclesTheme, symbol: "car.fill")
+            cardThemeAdjuster(to: vehiclesTheme.emojis, name: vehiclesTheme.name, symbol: "car.fill", color: vehiclesTheme.color)
             Spacer()
-            cardThemeAdjuster(to: animalsTheme, symbol: "pawprint.fill")
+            cardThemeAdjuster(to: animalsTheme.emojis, name: animalsTheme.name, symbol: "pawprint.fill", color: animalsTheme.color)
             Spacer()
         }
         .font(.largeTitle)
     }
     
-    func cardThemeAdjuster(to theme: [String], symbol: String) -> some View {
+    func cardThemeAdjuster(to theme: [String], name: String, symbol: String, color: Color) -> some View {
         Button {
-            selectedEmojis = theme.shuffled()
+            selectedEmojis.0 = theme.shuffled()
+            selectedEmojis.2 = color
         } label: {
-            Image(systemName: symbol)
+            VStack(spacing: 10) {
+                Image(systemName: symbol)
+                Text(name)
+                    .font(.subheadline)
+            }
         }
     }
 }
