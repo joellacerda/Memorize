@@ -7,39 +7,29 @@
 
 import SwiftUI
 
-struct CardView: Identifiable, View {
-    var id = UUID()
-    let content: String
-    let base = RoundedRectangle(cornerRadius: 12)
-    @State var isFaceUp = false
-   
+struct CardView: View {
+    let card: MemoryGame<String>.Card
     
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
+    }
+   
     var body: some View {
         ZStack {
+            let base = RoundedRectangle(cornerRadius: 12)
+            
             Group {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text(content).font(.largeTitle)
+                Text(card.content)
+                    .font(.system(size: 200))
+                    .minimumScaleFactor(0.01)
+                    .aspectRatio(1, contentMode: .fit)
             }
-            .opacity(isFaceUp ? 1 : 0)
+                .opacity(card.isFaceUp ? 1 : 0)
             
-            
-            Group {
-                base.fill(.orange)
-                base.strokeBorder(lineWidth: 2)
-                Image(systemName: "brain.filled.head.profile")
-                    .font(.largeTitle)
-            }
-            .opacity(isFaceUp ? 0 : 1)
-            
-        }
-        .onTapGesture {
-            isFaceUp.toggle()
+            base.fill()
+                .opacity(card.isFaceUp ? 0 : 1)
         }
     }
-}
-
-#Preview {
-    CardView(content: "👻")
-        .padding()
 }
