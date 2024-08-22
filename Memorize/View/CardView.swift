@@ -1,36 +1,55 @@
 //
-//  CardView.swift
+//  Cardview.swift
 //  Memorize
 //
-//  Created by Joel Lacerda on 19/10/23.
+//  Created by Joel Lacerda on 21/08/24.
 //
 
 import SwiftUI
 
 struct CardView: View {
-    let card: MemoryGame<String>.Card
+    typealias Card = MemoryGame<String>.Card
     
-    init(_ card: MemoryGame<String>.Card) {
+    let card: Card
+    
+    init(_ card: Card) {
         self.card = card
     }
    
     var body: some View {
-        ZStack {
-            let base = RoundedRectangle(cornerRadius: 12)
-            
-            Group {
-                base.fill(.white)
-                base.strokeBorder(lineWidth: 2)
+        Pie(endAngle: .degrees(240))
+            .opacity(Constants.Pie.opacity)
+            .overlay(
                 Text(card.content)
-                    .font(.system(size: 200))
-                    .minimumScaleFactor(0.01)
+                    .font(.system(size: Constants.FontSize.largest))
+                    .minimumScaleFactor(Constants.FontSize.scaleFactor)
+                    .multilineTextAlignment(.center)
                     .aspectRatio(1, contentMode: .fit)
-            }
-                .opacity(card.isFaceUp ? 1 : 0)
-            
-            base.fill()
-                .opacity(card.isFaceUp ? 0 : 1)
-        }
-        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+                    .padding(Constants.Pie.inset)
+            )
+            .padding(Constants.inset)
+            .cardify(isFaceUp: card.isFaceUp)
+            .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
     }
+    
+    private struct Constants {
+        static let inset: CGFloat = 5
+        struct FontSize {
+            static let largest: CGFloat = 200
+            static let smallest: CGFloat = 10
+            static let scaleFactor = smallest / largest
+        }
+        struct Pie {
+            static let opacity: CGFloat = 0.5
+            static let inset: CGFloat = 5
+        }
+    }
+}
+
+#Preview {
+    typealias Card = CardView.Card
+
+    return CardView(Card(content: "X"))
+        .padding()
+        .foregroundStyle(.orange)
 }
